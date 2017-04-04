@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript">
+    var logBackup = console.log;
+    console.log = function() {
+      var logMessages = [];
+        logMessages.push.apply(logMessages, arguments);
+        return logMessages;
+    };
+  </script>
+</head>
+<body>
+
+</body>
+</html>

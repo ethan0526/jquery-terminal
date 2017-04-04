@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script src="https://code.jquery.com/jquery-1.11.3.min.js"/></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.0.15/js/jquery.terminal.min.js"></script>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.terminal/1.0.15/css/jquery.terminal.min.css" rel="stylesheet"/>
+</head>
+<body>
+  <div id="term_demo"></div>
+  <iframe id="iframe_box" src="./preview.html" style="display: none;"></iframe>
+  <script type="text/javascript">
+    jQuery(function($, undefined) {
+      $('#term_demo').terminal(function(command) {
+        if (command !== '') {
+          try {
+            iframeWindow = $('#iframe_box').prop('contentWindow');
+            if (command.indexOf('document.') >= 0) {
+              iframeWindow.window.eval(command);
+              var result = iframeWindow.document.getElementsByTagName('body')[0].innerHTML;
+            } else if(command.indexOf('console.log(')) {
+              var result = iframeWindow.eval(command);
+            } else {
+              var result = iframeWindow.eval(command);
+            }
+            iframeWindow.document.getElementsByTagName('body')[0].innerHTML = '';
+
+            if (result !== undefined) {
+              this.echo(new String(result));
+            }
+          } catch(e) {
+            this.error(new String(e));
+          }
+        } else {
+         this.echo('');
+       }
+     }, {
+      greetings: 'Javascript Interpreter',
+      name: 'js_demo',
+      height: 200,
+      prompt: 'js> '
+    });
+    });
+  </script>
+</body>
+</html>
